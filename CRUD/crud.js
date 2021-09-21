@@ -1,23 +1,33 @@
-function criarTd(linha, nomeTexto)
-{
+function criarTd(linha, nomeTexto) {
     var td = document.createElement("td");
-     td.appendChild(document.createTextNode(nomeTexto));
-     linha.appendChild(td);
+    td.appendChild(document.createTextNode(nomeTexto));
+    linha.appendChild(td);
 }
 
-function excluirLinha()
-{
+function excluirLinha() {
     var linhaRemoverBotao = this.getAttribute("linharemover");
+
     document.getElementById(linhaRemoverBotao).remove();
 }
 
-function editarLinha()
-{
-    //implementar
+function editarLinha() {
+    var linhaEditarBotao = this.getAttribute("linhaEditar");
+    
+    var linha = document.getElementById(linhaEditarBotao);
+    var colunas = linha.getElementsByTagName("td");
+    var nome = colunas[0].innerHTML;
+    var documento = colunas[1].innerHTML;
+    var telefone = colunas[2].innerHTML;
+    var estado = colunas[3].innerHTML;
+
+    document.getElementById("nome").value = nome;
+    document.getElementById("documento").value = documento;
+    document.getElementById("telefone").value = telefone;
+    document.getElementById("estados").value = estado;
+
 }
 
-function adicionarLinha()
-{
+function adicionarLinha() {
     var inputNome = document.getElementById("nome");
     var inputDocumento = document.getElementById("documento");
     var inputTelefone = document.getElementById("telefone");
@@ -30,28 +40,23 @@ function adicionarLinha()
 
     var mensagemErro = "";
 
-    if(nome == "" || documento == "" || telefone == "")
-    {
+    if (nome == "" || documento == "" || telefone == "") {
         mensagemErro = "É obrigatorio preencher os campos";
     }
 
-    if(mensagemErro == "" && !isNaN(nome))
-    {
+    if (mensagemErro == "" && !isNaN(nome)) {
         mensagemErro = "Por favor coloque letras no nome";
     }
 
-    if(mensagemErro == "" && nome.length > 60)
-    {
+    if (mensagemErro == "" && nome.length > 60) {
         mensagemErro = "Você pode colocar até 60 letras";
     }
-    
-    if(mensagemErro == "" && estadoSelecionado == "...")
-    {
+
+    if (mensagemErro == "" && estadoSelecionado == "...") {
         mensagemErro = "por favor selecione um estado";
     }
 
-    if(mensagemErro == "")
-    {
+    if (mensagemErro == "") {
         var tabela = document.getElementById("corpoTabela");
         var numerodelinhas = tabela.rows.length + 1;
 
@@ -70,14 +75,16 @@ function adicionarLinha()
         botao.appendChild(document.createTextNode("Excluir"));
         botao.setAttribute("linharemover", "linha" + numerodelinhas);
         botao.addEventListener("click", excluirLinha);
+
         var td = document.createElement("td");
         td.appendChild(botao);
         tr.appendChild(td);
 
         var Editar = document.createElement("button");
         Editar.appendChild(document.createTextNode("Editar"));
-        Editar.setAttribute("id", "botaoDeEditar" + numerodelinhas);
+        Editar.setAttribute("linhaEditar", "linha" + numerodelinhas);
         Editar.addEventListener("click", editarLinha);
+
         var td = document.createElement("td");
         td.appendChild(Editar);
         tr.appendChild(td);
@@ -89,8 +96,7 @@ function adicionarLinha()
         inputTelefone.value = "";
         document.getElementById("estados").selectedIndex = "0";
     }
-    else
-    {
-        alert(mensagemErro);                
+    else {
+        alert(mensagemErro);
     }
 }
